@@ -10,6 +10,12 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:monu1988@localhost/flask_tutorial'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     db = SQLAlchemy(app)
+    db.init_app(app)
+
+    # shell context for flask cli
+    @app.shell_context_processor
+    def ctx():
+        return {"app": app, "db": db}
 
     app.config.from_mapping(
         SECRET_KEY='dev',
