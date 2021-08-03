@@ -8,14 +8,14 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:monu1988@localhost/flask_tutorial'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db = SQLAlchemy(app)
     db.init_app(app)
 
     # shell context for flask cli
-    @app.shell_context_processor
-    def ctx():
-        return {"app": app, "db": db}
+    # @app.shell_context_processor
+    # def ctx():
+    #     return {"app": app, "db": db}
 
     app.config.from_mapping(
         SECRET_KEY='dev',
@@ -48,7 +48,7 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    from . import user
+    from flaskr import user
     app.register_blueprint(user.user_blueprint)
 
     @app.route('/hellojson', methods=('GET', 'POST'))

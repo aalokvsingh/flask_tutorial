@@ -1,18 +1,35 @@
 from flask import Blueprint,jsonify,json,request
+# from flaskr import current_app as app
 from werkzeug.security import generate_password_hash,check_password_hash
-# from flaskr.models import User
+# from flaskr import db
+from flaskr.models import user
 
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
 
+
+# class User(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     username = db.Column(db.String(200))
+#     password = db.Column(db.String(200))
+#     firstname = db.Column(db.String(200))
+#     lastname = db.Column(db.String(200))
+
+#     def __repr__(self):
+#         if self.name:
+#             return "{} <{}>".format(
+#                 self.username)
+#         return self.firstname
+
 @user_blueprint.route('/<int:id>', methods=['POST']) 
-# @user_blueprint.route('/', methods=['POST'])
+@user_blueprint.route('/', methods=['POST'])
 def get_user(id=None):
+    #user = User.query.filter_by(username='alok5n').first()
     # users = User.query.filter_by(id=id).all()
 
     # if not users:
     #    return jsonify({'message': 'User does not exist'})
     
-    # return users
+    # return user
 
     # output = []
 
