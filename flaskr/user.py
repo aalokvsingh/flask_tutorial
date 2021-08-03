@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
 
-@user_blueprint.route('/<int:id>', methods=['POST'])
+@user_blueprint.route('/<int:id>', methods=['POST']) 
 @user_blueprint.route('/', methods=['POST'])
 def get_user(id=None):
     userData = {'id':id,'username':'alok5n','firstname':'Alok SIngh'}
