@@ -1,4 +1,5 @@
- from . import db
+# from flask import current_app
+from . import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)

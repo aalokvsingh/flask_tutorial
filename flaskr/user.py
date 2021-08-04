@@ -1,7 +1,8 @@
-from flask import Blueprint,jsonify,json,request
+from flask import Flask,Blueprint,jsonify,json,request
 # from flaskr import current_app as app
+# from flask import current_app as app
 from werkzeug.security import generate_password_hash,check_password_hash
-# from flaskr import db
+# from app import db
 from flaskr.models import user
 
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
