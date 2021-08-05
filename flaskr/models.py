@@ -1,5 +1,5 @@
-from sqlalchemy import text,column,String,Integer
-from flask import current_app as app
+#from sqlalchemy import text,column,String,Integer
+#from flask import current_app as app
 
 from . import db
 

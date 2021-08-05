@@ -1,9 +1,6 @@
 from flask import Flask,Blueprint,jsonify,json,request
-# from flaskr import current_app as app
-# from flask import current_app as app
 from werkzeug.security import generate_password_hash,check_password_hash
-# from app import db
-from .models import User
+from flaskr.models import User
 
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
 
