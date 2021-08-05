@@ -1,16 +1,16 @@
 import os
-
 from flask import Flask,jsonify
 from flask_sqlalchemy import SQLAlchemy
-
+db = SQLAlchemy()
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=False)
+    app = Flask(__name__, instance_relative_config=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:monu1988@localhost/flask_tutorial'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config["SQLALCHEMY_ECHO"] = True
-    db = SQLAlchemy(app)
+    db.init_app(app)
+
     
     # if test_config is None:
     #     # load the instance config, if it exists, when not testing
@@ -25,25 +25,25 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    from flaskr.auth import bp
-    app.register_blueprint(bp)
+    # from flaskr.auth import bp
+    # app.register_blueprint(bp)
 
-    from . import blog
-    app.register_blueprint(blog.bp)
-    app.add_url_rule('/',endpoint='index')
+    # from . import blog
+    # app.register_blueprint(blog.bp)
+    # app.add_url_rule('/',endpoint='index')
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # # a simple page that says hello
+    # @app.route('/hello')
+    # def hello():
+    #     return 'Hello, World!'
 
     from flaskr import user
     app.register_blueprint(user.user_blueprint)
 
-    @app.route('/hellojson', methods=('GET', 'POST'))
-    def hellojson():
-        userData = {'username':'alok5n','firstname':'Alok SIngh'}
-        return jsonify(userData)
+    # @app.route('/hellojson', methods=('GET', 'POST'))
+    # def hellojson():
+    #     userData = {'username':'alok5n','firstname':'Alok SIngh'}
+    #     return jsonify(userData)
 
     
     return app

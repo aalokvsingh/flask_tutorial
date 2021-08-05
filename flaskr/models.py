@@ -1,4 +1,6 @@
-# from flask import current_app
+from sqlalchemy import text,column,String,Integer
+from flask import current_app as app
+
 from . import db
 
 class User(db.Model):
@@ -9,7 +11,7 @@ class User(db.Model):
     lastname = db.Column(db.String(200))
 
     def __repr__(self):
-        if self.name:
-            return "{} <{}>".format(
-                self.username)
+        # if self.username:
+        #     return "{} <{}>".format(
+        #         self.username)
         return self.firstname

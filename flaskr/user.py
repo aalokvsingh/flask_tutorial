@@ -3,34 +3,40 @@ from flask import Flask,Blueprint,jsonify,json,request
 # from flask import current_app as app
 from werkzeug.security import generate_password_hash,check_password_hash
 # from app import db
-from flaskr.models import user
+from .models import User
 
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
-
-
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(200))
-#     password = db.Column(db.String(200))
-#     firstname = db.Column(db.String(200))
-#     lastname = db.Column(db.String(200))
-
-#     def __repr__(self):
-#         if self.name:
-#             return "{} <{}>".format(
-#                 self.username)
-#         return self.firstname
 
 @user_blueprint.route('/<int:id>', methods=['POST']) 
 @user_blueprint.route('/', methods=['POST'])
 def get_user(id=None):
-    #user = User.query.filter_by(username='alok5n').first()
-    # users = User.query.filter_by(id=id).all()
+    if id is None:
+        users = User.query.all()
+    else:
+        users = User.query.filter_by(id=id).first()
+        return jsonify(users)
+    result = []
+    
+    for user in users:
+        user_data = {}
+        user_data['id'] = user.id
+        user_data['username'] = user.username
+        user_data['password'] = user.password
+        user_data['firstname'] = user.firstname
+        user_data['lastname'] = user.lastname
+
+        result.append(user_data)
+    return jsonify(result)
+    # users = User.query.filter_by(id=id).first()
+    # users = User.query.all()
 
     # if not users:
     #    return jsonify({'message': 'User does not exist'})
-    
-    # return user
+    # # print(users)
+    # for user in users:
+    #     print(user)
+    #     return list(user)
+    # return dict(users)
 
     # output = []
 
