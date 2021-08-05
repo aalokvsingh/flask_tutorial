@@ -10,7 +10,7 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config["SQLALCHEMY_ECHO"] = True
-    db.init_app(app)
+    
 
     
     # if test_config is None:
@@ -20,6 +20,8 @@ def create_app(test_config=None):
     #     # load the test config if passed in
     #     app.config.from_mapping(test_config)
 
+    db.init_app(app)
+    
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
