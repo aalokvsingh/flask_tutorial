@@ -14,7 +14,7 @@ def get_user(id=None):
         users = User.query.all()
     else:
         users = User.query.filter_by(id=id).first()
-        return jsonify(users)
+        # return jsonify(users)
     result = []
     
     for user in users:

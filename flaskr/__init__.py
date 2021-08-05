@@ -6,7 +6,7 @@ db = SQLAlchemy()
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:monu1988@localhost/flask_tutorial'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:*****@localhost/flask_tutorial'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config["SQLALCHEMY_ECHO"] = True
     db.init_app(app)
@@ -24,18 +24,6 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    # from flaskr.auth import bp
-    # app.register_blueprint(bp)
-
-    # from . import blog
-    # app.register_blueprint(blog.bp)
-    # app.add_url_rule('/',endpoint='index')
-
-    # # a simple page that says hello
-    # @app.route('/hello')
-    # def hello():
-    #     return 'Hello, World!'
 
     from flaskr import user
     app.register_blueprint(user.user_blueprint)
