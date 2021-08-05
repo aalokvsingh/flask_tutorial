@@ -1,8 +1,9 @@
 import os
-from flask import Flask,jsonify
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
+#factory pattern
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -28,10 +29,11 @@ def create_app(test_config=None):
     from flaskr import user
     app.register_blueprint(user.user_blueprint)
 
-    # @app.route('/hellojson', methods=('GET', 'POST'))
-    # def hellojson():
-    #     userData = {'username':'alok5n','firstname':'Alok SIngh'}
-    #     return jsonify(userData)
+
+    @app.route('/hellojson', methods=('GET', 'POST'))
+    def hellojson():
+        userData = {'username':'alok5n','firstname':'Alok Singh'}
+        return userData
 
     
     return app
