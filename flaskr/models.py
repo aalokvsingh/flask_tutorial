@@ -9,9 +9,3 @@ class User(db.Model):
     password = db.Column(db.String(200))
     firstname = db.Column(db.String(200))
     lastname = db.Column(db.String(200))
-
-    def __repr__(self):
-        # if self.username:
-        #     return "{} <{}>".format(
-        #         self.username)
-        return self.firstname
