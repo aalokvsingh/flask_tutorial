@@ -13,7 +13,7 @@ def get_user(id=None):
     if id is None:
         users = User.query.all()
     else:
-        users = User.query.filter_by(id=id).first()
+        users = User.query.filter_by(id=id).all()
         # return jsonify(users)
     result = []
     

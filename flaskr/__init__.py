@@ -6,7 +6,7 @@ db = SQLAlchemy()
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:*****@localhost/flask_tutorial'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:monu1988@localhost/flask_tutorial'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config["SQLALCHEMY_ECHO"] = True
     db.init_app(app)
