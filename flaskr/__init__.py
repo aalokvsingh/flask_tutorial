@@ -31,6 +31,8 @@ def create_app(test_config=None):
     from flaskr import user
     app.register_blueprint(user.user_blueprint)
 
+    from flaskr.post import post
+    app.register_blueprint(post.post_blueprint)
 
     @app.route('/hellojson', methods=('GET', 'POST'))
     def hellojson():
