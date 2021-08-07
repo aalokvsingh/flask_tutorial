@@ -24,3 +24,6 @@ CREATE TABLE post (
     PRIMARY KEY (id)
 );
 
+
+alter table flask_tutorial.post modify image_path varchar(255) null;
+alter table flask_tutorial.post modify create_at datetime;

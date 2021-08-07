@@ -102,8 +102,8 @@ def register():
         logging.info(msg)
         return make_response(jsonify({'status':True,"data":[id],'message':msg}),200)
     except Exception as e:
-        logging.info(e)
-        return make_response(jsonify({'status':False,"data":[],'message':'Invalid Input'}),200)
+        logging.error(e)
+        return make_response(jsonify({'status':False,"data":[],'message':str(e)+' Invalid Input'}),200)
        
 
     
