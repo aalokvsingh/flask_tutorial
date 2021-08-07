@@ -9,3 +9,5 @@ CREATE TABLE user (
     status int(1) DEFAULT 1,
     PRIMARY KEY (id)
 );
+
+alter table flask_tutorial.user ADD CONSTRAINT unique_credentials unique (username); 
