@@ -5,13 +5,11 @@ import jwt
 from datetime import datetime,timedelta
 from flask import current_app as app
 from functools import wraps
-
+from . import db,logging
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
-
 def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
-
         token = None
         # current_user =''
         if 'x-api-key' in request.headers:
@@ -19,7 +17,7 @@ def token_required(f):
             # return token
         # return token
         if not token:
-            return jsonify({'message': 'a valid token is missing'})
+            return make_response(jsonify({'status':False,"data":[],'message':'a valid token is missing'}),200)
         # return token
         try:
             # return token
@@ -28,8 +26,8 @@ def token_required(f):
             current_user = User.query.filter_by(username=data['username']).first()
             # return current_user.username
         except:
-           return jsonify({'message': 'token is invalid!'})
-          
+           return make_response(jsonify({'status':False,"data":[],'message':'token is invalid!'}),200)
+
         return f(current_user, *args, **kwargs)
 
     return decorator
@@ -39,13 +37,15 @@ def token_required(f):
 @token_required
 def get_user1(self,id=None):
     # return make_response(jsonify(111))
+    users = {}
     if id is None:
         users = User.query.all()
     else:
         users = User.query.filter_by(id=id).all()
         # return jsonify(users)
-    result = []
     
+    result = []
+    logging.info(users)
     for user in users:
         user_data = {}
         user_data['id'] = user.id
@@ -55,7 +55,7 @@ def get_user1(self,id=None):
         user_data['lastname'] = user.lastname
 
         result.append(user_data)
-    return jsonify(result)
+    return make_response(jsonify({'status':True,"data":result,'message':'Data Found'}),200)
     
 
     # userData = {'id':id,'username':'alok5n','firstname':'Alok SIngh'}
@@ -65,19 +65,46 @@ def get_user1(self,id=None):
 def register():
     # data = request.get_json(force=True)
     data  = request.get_data()
+    msg = ""
+    id =""
     try:
         jsonData = json.loads(data)
+        logging.info(jsonData)
         # return jsonData
 
-        firstname   =  request.json.get('firstname')
-        lastname    =  request.json.get('lastname')
-        username    =  request.json.get('username')
-        password    =  request.json.get('password')
-        hashed_pwd = generate_password_hash(password,method='sha256')
-
-        return jsonify({'firstname':firstname})
-    except:
-        return jsonify({'status':"Invalid Input!"})
+        firstname   =  jsonData.get('firstname')
+        lastname    =  jsonData.get('lastname')
+        username    =  jsonData.get('username')
+        password    =  jsonData.get('password')
+        if not firstname or not lastname or not username or not password:
+            column = ''
+            if not firstname:
+                column ='firstname'
+            if not lastname:
+                column ='lastname'
+            if not username:
+                column ='username'
+            if not password:
+                column ='password'
+            msg = column+' is requird required'
+            return make_response(jsonify({'status':False,'data':[],'message':msg}),3000)
+        hashed_pwd = generate_password_hash(password,method='sha256') if 'password' in jsonData else ''
+        jsonData['password'] = hashed_pwd
+        userData = User(firstname=jsonData['firstname'],lastname=jsonData['lastname'],username=jsonData['username'],password=jsonData['password'])
+        logging.info(userData)
+        db.session.add(userData)
+        db.session.commit()
+        if userData.id:
+            id =userData.id
+            msg ='User Registration Successfull'
+        else:
+            msg ='User Registration UnSuccessfull'
+        logging.info(msg)
+        return make_response(jsonify({'status':True,"data":[id],'message':msg}),200)
+    except Exception as e:
+        logging.info(e)
+        return make_response(jsonify({'status':False,"data":[],'message':'Invalid Input'}),200)
+       
 
     
 
@@ -90,12 +117,12 @@ def login():
         # print(type(data))
         if data:
             JsonData = json.loads(data)
-            # return(JsonData['username'])
-            # password = check_password_hash(JsonData['password'])
             password = JsonData['password']
             username=JsonData['username']
-            UserData = User.query.filter_by(username=username,password=password).first()
+            UserData = User.query.filter_by(username=username).first()
             if UserData:
+                verify_password = check_password_hash(UserData.password,password)
+            if UserData and verify_password:
                 # return(jsonify([UserData.lastname,UserData.firstname,UserData.id]))
                 # generates the JWT Token
                 token = jwt.encode({
@@ -104,27 +131,27 @@ def login():
                 },app.config['SECRET_KEY'])
 
                 return make_response(
-                    jsonify({'token' : token.decode('UTF-8')}),
+                    jsonify({'status':True,'data':[token.decode('UTF-8')],'message':'authentication successfull'}),
                     201
                 )
     
             else:
                 #return jsonify({'status':'Invalid Usernaem or password'}),401
                 return make_response(
-                    'Could not verify',
+                    jsonify({'status':False,'data':[],'message':'Could not verify'}),
                     403,
                     {'WWW-Authenticate' : 'Basic realm ="Wrong Password !!"'}
                 )
         else:
             # return jsonify({'status':'Request payload is empty'})
             return make_response(
-            'username and Password required',
+                jsonify({'status':False,'data':[],'message':'username and Password required'}),
             401,
             {'WWW-Authenticate' : 'Basic realm ="Username and Password required !!"'}
         )
     else:
 
-        return jsonify({'status':'Invali requst method'})
+        return make_response(jsonify({'status':False,"data":[],'message':'Invalid requst method'}),200)
         
 
 

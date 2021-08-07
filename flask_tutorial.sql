@@ -10,7 +10,10 @@ CREATE TABLE user (
     PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS user;
+
+alter table flask_tutorial.user ADD CONSTRAINT unique_credentials unique (username); 
+
+DROP TABLE IF EXISTS post;
 CREATE TABLE post (
     id int NOT NULL AUTO_INCREMENT,
     ptitle varchar(255) NOT NULL,
@@ -20,3 +23,4 @@ CREATE TABLE post (
     pstatus int(1) DEFAULT 1,
     PRIMARY KEY (id)
 );
+

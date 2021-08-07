@@ -1,8 +1,10 @@
 import os
 from flask import Flask
+# from instance.config import *
+import logging
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
-
+logging.basicConfig(filename = 'flask_tutorial.log' , level = logging.DEBUG, format = f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 #factory pattern
 def create_app(test_config=None):
     # create and configure the app
@@ -11,10 +13,6 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config["SQLALCHEMY_ECHO"] = True
-    
-    
-
-    
     # if test_config is None:
     #     # load the instance config, if it exists, when not testing
     #     app.config.from_pyfile('config.py', silent=True)
