@@ -27,7 +27,8 @@ def post_list(id=None):
     return jsonify(result)
     
 @post_blueprint.route('/create-post',methods=['POST'])
-def create_post():
+@token_required
+def create_post(self):
     try:
         getpayload = request.get_data()
         jsonData = json.loads(getpayload)
@@ -56,7 +57,8 @@ def create_post():
         return make_response(jsonify({'status':False,'data':[],'message':str(e)}),500)
         
 @post_blueprint.route('/delete/<int:id>',methods=['DELETE'])
-def post_delete(id):
+@token_required
+def post_delete(self,id):
     try:
         if id:
             post = Post.query.filter_by(id=id).first()
@@ -75,7 +77,8 @@ def post_delete(id):
         return make_response(jsonify({'status':False,'data':[],'message':str(e)}),500)
 
 @post_blueprint.route('/update/<int:id>',methods=['PATCH'])
-def post_update(id):
+@token_required
+def post_update(self,id):
     try:
         if id:
             getpayload = request.get_data()
