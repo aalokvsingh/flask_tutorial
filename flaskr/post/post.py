@@ -8,8 +8,8 @@ post_blueprint = Blueprint('post_blueprint','__name__',url_prefix='/post')
 
 @post_blueprint.route('/',methods=['GET','POST'])
 @post_blueprint.route('/<int:id>',methods=['GET','POST'])
-# @token_required
-def post_list(id=None):
+@token_required
+def post_list(self,id=None):
     if id is None:
         posts = Post.query.all()
     else:
