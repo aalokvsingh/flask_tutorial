@@ -2,7 +2,7 @@
 #from flask import current_app as app
 
 from enum import unique
-from . import db
+from . import db,event,logging
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -11,9 +11,15 @@ class User(db.Model):
     firstname = db.Column(db.String(200))
     lastname = db.Column(db.String(200))
 
-    # def __init__(self,firstname,lastname,username,password):
-    #     self.firstname = firstname
-    #     self.lastname = lastname
-    #     self.username = username
-    #     self.password = password
+@event.listens_for(User, 'before_insert')
+def validate_before_insert(mapper,connect,target):
+    if not target.firstname:
+        raise AssertionError("firstname required")
+    if not target.lastname:
+        raise AssertionError("lastname required")
+    if not target.username:
+        raise AssertionError("username required")
+    if not target.password:
+        raise AssertionError("password required")
+    
         

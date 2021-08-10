@@ -3,6 +3,9 @@ from flask import Flask
 # from instance.config import *
 import logging
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import event
+from sqlalchemy.orm import validates
+from flask import Flask,Blueprint,jsonify,json,request,make_response
 db = SQLAlchemy()
 logging.basicConfig(filename = 'flask_tutorial.log' , level = logging.DEBUG, format = f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 #factory pattern

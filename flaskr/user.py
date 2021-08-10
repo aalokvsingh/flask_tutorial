@@ -76,22 +76,11 @@ def register():
         lastname    =  jsonData.get('lastname')
         username    =  jsonData.get('username')
         password    =  jsonData.get('password')
-        if not firstname or not lastname or not username or not password:
-            column = ''
-            if not firstname:
-                column ='firstname'
-            if not lastname:
-                column ='lastname'
-            if not username:
-                column ='username'
-            if not password:
-                column ='password'
-            msg = column+' is requird required'
-            return make_response(jsonify({'status':False,'data':[],'message':msg}),3000)
-        hashed_pwd = generate_password_hash(password,method='sha256') if 'password' in jsonData else ''
+
+        hashed_pwd = generate_password_hash(password,method='sha256') if jsonData['password'] else ''
         jsonData['password'] = hashed_pwd
         userData = User(firstname=jsonData['firstname'],lastname=jsonData['lastname'],username=jsonData['username'],password=jsonData['password'])
-        logging.info(userData)
+        # logging.info(userData)
         db.session.add(userData)
         db.session.commit()
         if userData.id:
@@ -99,11 +88,11 @@ def register():
             msg ='User Registration Successfull'
         else:
             msg ='User Registration UnSuccessfull'
-        logging.info(msg)
+        # logging.info(msg)
         return make_response(jsonify({'status':True,"data":[id],'message':msg}),200)
     except Exception as e:
-        logging.info(e)
-        return make_response(jsonify({'status':False,"data":[],'message':'Invalid Input'}),200)
+        # logging.info(e)
+        return make_response(jsonify({'status':False,"data":str(e),'message':'Invalid Input'}),200)
        
 
     
