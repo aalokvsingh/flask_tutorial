@@ -7,6 +7,7 @@ from flask import current_app as app
 from functools import wraps
 from . import db,logging
 user_blueprint = Blueprint('user_blueprint','__name__',url_prefix='/user')
+
 def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
